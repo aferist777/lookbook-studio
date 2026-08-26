@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en" data-theme="midnight" data-variant="rows">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lookbook Studio · Log panel</title>
+<style>
+:root{
+  --r-sm:8px; --r:11px; --r-lg:15px; --pill:999px; --ease:cubic-bezier(.22,1,.36,1);
+  --font:"Inter","Segoe UI",system-ui,sans-serif; --mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+  --strip:34px; --drawer:440px;
+}
+[data-theme="midnight"]{--bg:oklch(.17 .015 265);--surface:oklch(.21 .018 265);--surface-2:oklch(.255 .02 265);
+  --border:oklch(.32 .02 265);--border-soft:oklch(.27 .02 265);--ink:oklch(.96 .005 265);--muted:oklch(.71 .012 265);
+  --primary:oklch(.64 .15 265);--primary-ink:oklch(.99 0 0);--primary-soft:oklch(.64 .15 265/.16);--accent:oklch(.80 .13 205);
+  --star:oklch(.83 .15 85);--success:oklch(.76 .15 152);--danger:oklch(.66 .19 25);--warn:oklch(.80 .15 70);
+  --shadow:0 16px 50px -16px oklch(0 0 0/.7);}
+[data-theme="acid"]{--bg:oklch(.155 .006 130);--surface:oklch(.195 .008 130);--surface-2:oklch(.24 .01 130);
+  --border:oklch(.31 .012 130);--border-soft:oklch(.26 .01 130);--ink:oklch(.96 .006 130);--muted:oklch(.71 .012 130);
+  --primary:oklch(.86 .19 128);--primary-ink:oklch(.20 .04 130);--primary-soft:oklch(.86 .19 128/.15);--accent:oklch(.66 .2 300);
+  --star:oklch(.84 .16 92);--success:oklch(.80 .17 140);--danger:oklch(.66 .2 22);--warn:oklch(.82 .16 75);
+  --shadow:0 16px 50px -16px oklch(0 0 0/.72);}
+[data-theme="ember"]{--bg:oklch(.17 .012 40);--surface:oklch(.21 .014 40);--surface-2:oklch(.255 .016 40);
+  --border:oklch(.32 .02 40);--border-soft:oklch(.27 .016 40);--ink:oklch(.96 .008 60);--muted:oklch(.72 .014 50);
+  --primary:oklch(.71 .17 48);--primary-ink:oklch(.18 .03 48);--primary-soft:oklch(.71 .17 48/.16);--accent:oklch(.74 .12 210);
+  --star:oklch(.83 .15 85);--success:oklch(.76 .15 152);--danger:oklch(.64 .2 25);--warn:oklch(.80 .15 70);
+  --shadow:0 16px 50px -16px oklch(0 0 0/.7);}
+[data-theme="paper"]{--bg:oklch(1 0 0);--surface:oklch(.978 .003 265);--surface-2:oklch(.955 .004 265);
+  --border:oklch(.9 .006 265);--border-soft:oklch(.93 .005 265);--ink:oklch(.24 .02 265);--muted:oklch(.52 .02 265);
+  --primary:oklch(.48 .16 265);--primary-ink:oklch(.99 0 0);--primary-soft:oklch(.48 .16 265/.1);--accent:oklch(.57 .19 25);
+  --star:oklch(.74 .16 80);--success:oklch(.58 .14 152);--danger:oklch(.56 .2 25);--warn:oklch(.7 .15 70);
+  --shadow:0 18px 50px -18px oklch(.3 .05 265/.28);}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);font-size:12.5px;overflow:hidden;
+  height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+
+/* faux app behind, to give the drawer context */
+.app{position:absolute;inset:0;right:var(--strip);display:flex;flex-direction:column}
+.appbar{display:flex;align-items:center;gap:14px;padding:11px 22px;border-bottom:1px solid var(--border-soft)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:650;font-size:14px}
+.brand .dot{width:20px;height:20px;border-radius:6px;background:var(--primary)}
+.tabs{display:flex;gap:3px;margin-left:8px}
+.tabs span{padding:8px 13px;color:var(--muted);font-weight:500;font-size:12.5px}
+.tabs span.on{color:var(--ink);border-bottom:2px solid var(--primary)}
+.theme-dd{margin-left:auto;display:flex;align-items:center;gap:8px}
+.theme-dd select{background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:6px 9px;font:inherit;font-size:12px}
+.appbody{flex:1;display:grid;place-items:center;color:var(--muted)}
+.hintbox{text-align:center;max-width:440px;line-height:1.6}
+.hintbox b{color:var(--ink)}
+.sim{margin-top:16px;background:var(--primary);color:var(--primary-ink);border:0;border-radius:9px;padding:9px 16px;
+  font:inherit;font-weight:600;cursor:pointer}
+
+/* right strip */
+.strip{position:fixed;top:0;right:0;width:var(--strip);height:100vh;background:var(--surface);border-left:1px solid var(--border-soft);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:40;transition:background .15s var(--ease)}
+.strip:hover{background:var(--surface-2)}
+.strip span{writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.32em;font:600 11px/1 var(--mono);
+  color:var(--muted);text-transform:uppercase}
+.strip .badge{position:absolute;top:14px;left:50%;transform:translateX(-50%);min-width:16px;height:16px;border-radius:var(--pill);
+  background:var(--primary);color:var(--primary-ink);font:700 10px/16px var(--font);text-align:center;padding:0 4px}
+
+/* scrim + drawer */
+.scrim{position:fixed;inset:0;right:var(--strip);background:transparent;z-index:45;display:none}
+.scrim.show{display:block}
+.drawer{position:fixed;top:0;right:var(--strip);height:100vh;width:var(--drawer);background:var(--surface);
+  border-left:1px solid var(--border);box-shadow:var(--shadow);z-index:50;display:flex;flex-direction:column;
+  transform:translateX(calc(100% + var(--strip)));transition:transform .26s var(--ease)}
+.drawer.open{transform:none}
+
+.dhead{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border-soft)}
+.dhead h3{margin:0;font-size:13.5px;font-weight:650}
+.dhead .count{color:var(--muted);font-size:11.5px}
+.variant{margin-left:auto;display:inline-flex;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:8px;padding:3px;gap:2px}
+.variant button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:11px;font-weight:550;padding:5px 9px;border-radius:6px;cursor:pointer}
+.variant button[aria-selected="true"]{background:var(--primary);color:var(--primary-ink)}
+
+/* ---- list (top half) ---- */
+.list{flex:1 1 55%;overflow:auto;padding:8px;min-height:0}
+.entry{cursor:pointer;border-radius:9px}
+.entry .prov{font:600 9px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:5px}
+.entry .prov.openrouter{color:var(--accent);background:oklch(from var(--accent) l c h/.15)}
+.entry .prov.replicate{color:var(--primary);background:var(--primary-soft)}
+.entry .op{font-weight:560;color:var(--ink)}
+.entry .model{color:var(--muted);font-size:11px}
+.entry .time{color:var(--muted);font:500 10.5px/1 var(--mono)}
+.kind{display:inline-flex;width:16px;height:16px;color:var(--muted)}
+.kind svg{width:16px;height:16px}
+.dot{width:7px;height:7px;border-radius:50%;flex:none}
+.dot.ok{background:var(--success)} .dot.error{background:var(--danger)}
+.dot.pending{background:var(--warn);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* variant: rows */
+[data-variant="rows"] .entry{display:flex;align-items:center;gap:10px;padding:9px 10px}
+[data-variant="rows"] .entry:hover{background:var(--surface-2)}
+[data-variant="rows"] .entry.sel{background:var(--primary-soft)}
+[data-variant="rows"] .entry .mid{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+[data-variant="rows"] .entry .kinds{display:flex;gap:4px}
+
+/* variant: cards */
+[data-variant="cards"] .list{display:flex;flex-direction:column;gap:8px}
+[data-variant="cards"] .entry{background:var(--surface-2);border:1px solid var(--border-soft);padding:11px 12px;display:grid;
+  grid-template-columns:auto 1fr auto;grid-gap:4px 10px;align-items:center}
+[data-variant="cards"] .entry:hover{border-color:var(--border)}
+[data-variant="cards"] .entry.sel{border-color:var(--primary)}
+[data-variant="cards"] .entry .op{grid-column:2}
+[data-variant="cards"] .entry .model{grid-column:2}
+[data-variant="cards"] .entry .kinds{grid-column:3;grid-row:1/3;display:flex;gap:5px}
+[data-variant="cards"] .entry .time{grid-column:1;grid-row:1/3}
+
+/* variant: console */
+[data-variant="console"] .list{font-family:var(--mono);font-size:11.5px;padding:6px}
+[data-variant="console"] .entry{display:flex;align-items:center;gap:9px;padding:5px 8px;border-radius:5px}
+[data-variant="console"] .entry:hover{background:var(--surface-2)}
+[data-variant="console"] .entry.sel{background:var(--primary-soft)}
+[data-variant="console"] .entry .mid{display:flex;gap:8px;align-items:center;flex:1;min-width:0}
+[data-variant="console"] .entry .op{font-weight:500}
+[data-variant="console"] .entry .model{font-size:10.5px}
+[data-variant="console"] .entry .kinds{display:flex;gap:4px}
+[data-variant="console"] .entry .prov{background:transparent;padding:0}
+
+/* ---- detail (bottom half) ---- */
+.detail{flex:0 0 45%;border-top:1px solid var(--border);display:flex;flex-direction:column;min-height:0}
+.dtabs{display:flex;gap:3px;padding:9px 12px 0}
+.dtabs button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:560;font-size:12px;padding:6px 12px;
+  border-radius:7px 7px 0 0;cursor:pointer;border-bottom:2px solid transparent}
+.dtabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--primary)}
+.dtabs .err{margin-left:auto;align-self:center;color:var(--danger);font-size:11px;font-weight:600;display:none}
+.detail.has-error .dtabs .err{display:inline}
+.code{flex:1;overflow:auto;margin:8px 12px 12px;background:var(--bg);border:1px solid var(--border-soft);border-radius:9px;
+  padding:11px 13px;font:500 11.5px/1.55 var(--mono);color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.code .k{color:var(--accent)} .code .s{color:var(--success)} .code .n{color:var(--primary)} .code .e{color:var(--danger)}
+.empty{flex:1;display:grid;place-items:center;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+
+<div class="app" id="appArea">
+  <div class="appbar">
+    <div class="brand"><span class="dot"></span> Lookbook Studio</div>
+    <div class="tabs"><span>Personas</span><span class="on">Wardrobe</span><span>Fitting room</span><span>Collect</span><span>Lookbook</span></div>
+    <div class="theme-dd">
+      <select id="theme" title="Color theme">
+        <option value="midnight">Midnight</option><option value="acid">Acid</option>
+        <option value="ember">Ember</option><option value="paper">Paper</option>
+      </select>
+    </div>
+  </div>
+  <div class="appbody">
+    <div class="hintbox">
+      Click the <b>LOG</b> strip on the right edge to open the panel. Click anywhere here (outside the panel) to close it.<br>
+      New AI requests appear at the <b>top</b> the moment they are sent — including background calls.
+      <br><button class="sim" id="simBtn">▶ Simulate an AI request</button>
+    </div>
+  </div>
+</div>
+
+<!-- right strip -->
+<div class="strip" id="strip" title="Open / close the AI log">
+  <span>LOG</span>
+  <div class="badge" id="stripBadge">5</div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<!-- drawer -->
+<div class="drawer open" id="drawer">
+  <div class="dhead">
+    <h3>AI Log</h3><span class="count" id="hcount">5 calls</span>
+    <div class="variant" id="variant" role="tablist">
+      <button data-v="rows" aria-selected="true">Rows</button>
+      <button data-v="cards">Cards</button>
+      <button data-v="console">Console</button>
+    </div>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="detail" id="detail">
+    <div class="dtabs" id="dtabs">
+      <button data-d="request" aria-selected="true">Request</button>
+      <button data-d="response">Response</button>
+      <button data-d="result">Result</button>
+      <span class="err">● error</span>
+    </div>
+    <pre class="code" id="code"></pre>
+  </div>
+</div>
+
+<script>
+const root=document.documentElement;
+const ICON_TEXT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>';
+const ICON_IMG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 16-5-5L5 21"/></svg>';
+
+// sample entries (newest pushed to FRONT)
+let entries = [
+  {prov:'Replicate', op:'G1 · persona body', model:'z-image-turbo', kinds:['text','image'], status:'ok', time:'12:31:07',
+   request:{model:'prunaai/z-image-turbo', input:{prompt:'Full-body studio photo of a 22 androgynous tomboy streetwear model, A-pose, plain base layer, seamless grey bg, keep the same face as reference', image:'face_1781.jpg'}},
+   response:{id:'r9f2', status:'succeeded', output:['https://replicate.delivery/.../body.png'], metrics:{predict_time:6.4}},
+   result:'1 image saved → data/personas/body_1781.png'},
+  {prov:'OpenRouter', op:'V1 · garment analysis', model:'gemini-3.1-flash-lite', kinds:['text','image'], status:'ok', time:'12:30:52',
+   request:{model:'google/gemini-3.1-flash-lite', response_format:{type:'json_object'}, messages:[{role:'system',content:'You are a fashion-cataloguing assistant…'},{role:'user',content:[{type:'text',text:'Identify the wearable items…'},{type:'image_url',image_url:{url:'data:image/jpeg;base64,…'}}]}]},
+   response:{choices:[{message:{content:'{"items":[{"slot":"top","category":"oversize hoodie","color":"black","search_query":"oversize hoodie men"}]}'}}]},
+   result:'{ items: [ { slot:"top", category:"oversize hoodie", search_query:"oversize hoodie men" } ] }'},
+  {prov:'OpenRouter', op:'T1 · translate', model:'hermes-4-405b', kinds:['text'], status:'ok', time:'12:30:51',
+   request:{model:'nousresearch/hermes-4-405b', messages:[{role:'system',content:'You translate the user text to English…'},{role:'user',content:'пацанский оверсайз худи, мешковатый'}]},
+   response:{choices:[{message:{content:'tomboy oversize hoodie, baggy'}}]}, result:'tomboy oversize hoodie, baggy'},
+  {prov:'Replicate', op:'U1 · cutout', model:'bria/remove-background', kinds:['image'], status:'error', time:'12:30:40',
+   request:{model:'bria/remove-background', input:{image:'packshot_5512.jpg'}},
+   response:{error:'CUDA out of memory: payload image exceeds 4096px', status:'failed'},
+   result:'ERROR — model returned: CUDA out of memory (payload 5200px). Downscale and retry.'},
+  {prov:'Replicate', op:'G5 · try-on top', model:'flux-fill-redux-try-on', kinds:['text','image'], status:'pending', time:'12:30:38',
+   request:{model:'cedoysch/flux-fill-redux-try-on', input:{image:'model_77.png', garment:'cutout_5512.png', prompt:'dress the person in the garment on the upper body…'}},
+   response:'(waiting for the model…)', result:'(pending)'},
+];
+
+const list=document.getElementById('list');
+const code=document.getElementById('code');
+const detail=document.getElementById('detail');
+let selIdx=0, dView='request';
+
+function kindsHTML(k){return k.map(x=>`<span class="kind" title="${x}">${x==='text'?ICON_TEXT:ICON_IMG}</span>`).join('')}
+function render(){
+  list.innerHTML='';
+  entries.forEach((e,i)=>{
+    const d=document.createElement('div');
+    d.className='entry'+(i===selIdx?' sel':'');
+    d.innerHTML=`<span class="dot ${e.status}"></span>
+      <div class="mid">
+        <div style="display:flex;align-items:center;gap:7px"><span class="prov ${e.prov.toLowerCase()}">${e.prov}</span><span class="op">${e.op}</span></div>
+        <span class="model">${e.model}</span>
+      </div>
+      <div class="kinds">${kindsHTML(e.kinds)}</div>
+      <span class="time">${e.time}</span>`;
+    d.onclick=()=>{selIdx=i;dView='request';syncDTabs();render();showDetail()};
+    list.appendChild(d);
+  });
+  document.getElementById('hcount').textContent=entries.length+' calls';
+  document.getElementById('stripBadge').textContent=entries.length;
+  showDetail();
+}
+function pretty(obj){
+  if(typeof obj==='string') return obj;
+  let j=JSON.stringify(obj,null,2);
+  return j.replace(/"([^"]+)":/g,'<span class="k">"$1"</span>:')
+          .replace(/: "([^"]*)"/g,': <span class="s">"$1"</span>')
+          .replace(/: (\d+\.?\d*)/g,': <span class="n">$1</span>');
+}
+function showDetail(){
+  const e=entries[selIdx];
+  detail.classList.toggle('has-error', e&&e.status==='error');
+  if(!e){code.textContent='';return}
+  const v = dView==='request'?e.request : dView==='response'?e.response : e.result;
+  const html = (dView==='result'&&e.status==='error') ? `<span class="e">${e.result}</span>` : pretty(v);
+  code.innerHTML=html;
+}
+function syncDTabs(){document.querySelectorAll('#dtabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.d===dView))}
+
+document.querySelectorAll('#dtabs button').forEach(b=>b.onclick=()=>{dView=b.dataset.d;syncDTabs();showDetail()});
+document.querySelectorAll('#variant button').forEach(b=>b.onclick=()=>{
+  root.dataset.variant=b.dataset.v;
+  document.querySelectorAll('#variant button').forEach(x=>x.setAttribute('aria-selected',x===b));
+});
+document.getElementById('theme').onchange=e=>root.dataset.theme=e.target.value;
+
+// open / close
+const drawer=document.getElementById('drawer'), scrim=document.getElementById('scrim');
+function openD(){drawer.classList.add('open');scrim.classList.add('show')}
+function closeD(){drawer.classList.remove('open');scrim.classList.remove('show')}
+document.getElementById('strip').onclick=()=>drawer.classList.contains('open')?closeD():openD();
+scrim.onclick=closeD;
+document.getElementById('appArea').addEventListener('click',ev=>{ if(!ev.target.closest('.sim')&&!ev.target.closest('.theme-dd')) closeD(); });
+
+// simulate a live request appearing on top
+let n=0;
+document.getElementById('simBtn').onclick=()=>{
+  openD();
+  const ops=[['Replicate','G6 · try-on bottom','flux-fill-redux-try-on',['text','image']],
+             ['OpenRouter','V3 · stylist','gemini-3.1-flash-lite',['text']],
+             ['Replicate','G9 · collage bg','bria/generate-background',['text','image']]];
+  const o=ops[n++%ops.length];
+  const t=new Date(); const hh=String(t.getHours()).padStart(2,'0'),mm=String(t.getMinutes()).padStart(2,'0'),ss=String(t.getSeconds()).padStart(2,'0');
+  const e={prov:o[0],op:o[1],model:o[2],kinds:o[3],status:'pending',time:`${hh}:${mm}:${ss}`,
+    request:{model:o[2],input:{prompt:'(synthetic test payload)'}},response:'(waiting…)',result:'(pending)'};
+  entries.unshift(e); selIdx=0; render();
+  setTimeout(()=>{e.status='ok';e.response={status:'succeeded',output:['https://replicate.delivery/…']};e.result='1 image saved';render()},1400);
+};
+
+root.dataset.variant='rows'; render();
+</script>
+</body>
+</html>

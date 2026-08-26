@@ -1,0 +1,1 @@
+"""Lookbook Studio application package."""

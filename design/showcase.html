@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lookbook Studio · UI Kit</title>
+<style>
+/* ============================== THEMES ============================== */
+:root{
+  --r-xs:6px; --r-sm:8px; --r:11px; --r-lg:15px; --pill:999px;
+  --sp1:4px; --sp2:8px; --sp3:12px; --sp4:14px; --sp5:20px; --sp6:30px; --sp7:44px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --font:"Inter","Segoe UI Variable Text","Segoe UI",-apple-system,Roboto,system-ui,sans-serif;
+  --mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+  --fs:12.5px;
+  --z-drop:1000; --z-sticky:1100; --z-backdrop:1200; --z-modal:1300; --z-tip:1400;
+}
+[data-theme="midnight"]{
+  --bg:oklch(.17 .015 265); --surface:oklch(.21 .018 265); --surface-2:oklch(.255 .02 265);
+  --border:oklch(.32 .02 265); --border-soft:oklch(.27 .02 265);
+  --ink:oklch(.96 .005 265); --muted:oklch(.71 .012 265);
+  --primary:oklch(.64 .15 265); --primary-ink:oklch(.99 0 0); --primary-soft:oklch(.64 .15 265 / .16);
+  --accent:oklch(.80 .13 205); --accent-ink:oklch(.18 .03 230);
+  --star:oklch(.83 .15 85); --success:oklch(.76 .15 152); --danger:oklch(.66 .19 25); --warn:oklch(.80 .15 70);
+  --shadow:0 12px 30px -12px oklch(0 0 0 / .6);
+}
+[data-theme="acid"]{
+  --bg:oklch(.155 .006 130); --surface:oklch(.195 .008 130); --surface-2:oklch(.24 .01 130);
+  --border:oklch(.31 .012 130); --border-soft:oklch(.26 .01 130);
+  --ink:oklch(.96 .006 130); --muted:oklch(.71 .012 130);
+  --primary:oklch(.86 .19 128); --primary-ink:oklch(.20 .04 130); --primary-soft:oklch(.86 .19 128 / .15);
+  --accent:oklch(.66 .2 300); --accent-ink:oklch(.98 0 0);
+  --star:oklch(.84 .16 92); --success:oklch(.80 .17 140); --danger:oklch(.66 .2 22); --warn:oklch(.82 .16 75);
+  --shadow:0 12px 30px -12px oklch(0 0 0 / .65);
+}
+[data-theme="ember"]{
+  --bg:oklch(.17 .012 40); --surface:oklch(.21 .014 40); --surface-2:oklch(.255 .016 40);
+  --border:oklch(.32 .02 40); --border-soft:oklch(.27 .016 40);
+  --ink:oklch(.96 .008 60); --muted:oklch(.72 .014 50);
+  --primary:oklch(.71 .17 48); --primary-ink:oklch(.18 .03 48); --primary-soft:oklch(.71 .17 48 / .16);
+  --accent:oklch(.74 .12 210); --accent-ink:oklch(.16 .03 230);
+  --star:oklch(.83 .15 85); --success:oklch(.76 .15 152); --danger:oklch(.64 .2 25); --warn:oklch(.80 .15 70);
+  --shadow:0 12px 30px -12px oklch(0 0 0 / .6);
+}
+[data-theme="paper"]{
+  --bg:oklch(1 0 0); --surface:oklch(.978 .003 265); --surface-2:oklch(.955 .004 265);
+  --border:oklch(.9 .006 265); --border-soft:oklch(.93 .005 265);
+  --ink:oklch(.24 .02 265); --muted:oklch(.52 .02 265);
+  --primary:oklch(.48 .16 265); --primary-ink:oklch(.99 0 0); --primary-soft:oklch(.48 .16 265 / .1);
+  --accent:oklch(.57 .19 25); --accent-ink:oklch(.99 0 0);
+  --star:oklch(.74 .16 80); --success:oklch(.58 .14 152); --danger:oklch(.56 .2 25); --warn:oklch(.7 .15 70);
+  --shadow:0 14px 32px -16px oklch(.3 .05 265 / .22);
+}
+
+/* ============================== BASE ============================== */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);
+  font-size:var(--fs);line-height:1.5;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;
+  transition:background .4s var(--ease),color .4s var(--ease)}
+h1,h2,h3{margin:0;letter-spacing:-.02em;text-wrap:balance}
+a{color:var(--accent)}
+::selection{background:var(--primary-soft)}
+*{scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--pill);border:3px solid var(--bg)}
+*::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ============================== TOPBAR ============================== */
+.topbar{position:sticky;top:0;z-index:var(--z-sticky);display:flex;align-items:center;gap:var(--sp4);
+  padding:11px 24px;background:oklch(from var(--bg) l c h / .82);backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--border-soft)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:650;font-size:14px;letter-spacing:-.01em}
+.brand .dot{width:20px;height:20px;border-radius:6px;background:var(--primary);
+  box-shadow:0 0 0 4px var(--primary-soft);display:grid;place-items:center}
+.brand .dot::after{content:"";width:7px;height:7px;border-radius:2px;background:var(--primary-ink)}
+.brand small{color:var(--muted);font-weight:500}
+
+/* theme dropdown — top-right corner */
+.theme-dd{margin-left:auto;position:relative}
+.theme-dd .tg{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;color:var(--ink);font:inherit;font-size:12px;font-weight:540;min-width:138px}
+.theme-dd .tg:hover{border-color:var(--muted)}
+.theme-dd .sw{width:12px;height:12px;border-radius:50%;flex:none}
+.theme-dd .chev{margin-left:auto;width:6px;height:6px;border-right:2px solid var(--muted);
+  border-bottom:2px solid var(--muted);transform:rotate(45deg) translate(-2px,-2px);transition:.2s}
+.theme-dd.open .chev{transform:rotate(-135deg)}
+.theme-dd .menu{position:absolute;top:calc(100% + 6px);right:0;min-width:158px;z-index:var(--z-drop);
+  background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:5px;box-shadow:var(--shadow);
+  opacity:0;transform:translateY(-6px);pointer-events:none;transition:.18s var(--ease)}
+.theme-dd.open .menu{opacity:1;transform:none;pointer-events:auto}
+.theme-dd .menu div{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:var(--r-xs);cursor:pointer;font-size:12.5px}
+.theme-dd .menu div:hover{background:var(--surface)}
+.theme-dd .menu div[aria-selected="true"]{color:var(--primary);font-weight:580}
+
+/* ============================== LAYOUT ============================== */
+.wrap{max-width:1140px;margin:0 auto;padding:34px 24px 110px}
+.lede{max-width:66ch;margin-bottom:var(--sp6)}
+.lede h1{font-size:clamp(22px,3vw,30px);font-weight:680}
+.lede p{color:var(--muted);font-size:13px;margin-top:9px}
+.kbd{font:500 11px/1 var(--mono);background:var(--surface-2);border:1px solid var(--border);padding:2px 6px;border-radius:var(--r-xs);color:var(--ink)}
+section.block{margin-top:var(--sp7);scroll-margin-top:80px}
+.block>h2{font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);
+  margin-bottom:var(--sp4);display:flex;align-items:center;gap:10px}
+.block>h2::after{content:"";flex:1;height:1px;background:var(--border-soft)}
+.panel{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--sp5)}
+.row{display:flex;flex-wrap:wrap;gap:var(--sp4);align-items:center}
+.col{display:flex;flex-direction:column;gap:var(--sp4)}
+.vlabel{font:600 9.5px/1 var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:9px;display:block}
+.cell{flex:1;min-width:200px}
+.muted{color:var(--muted)}
+.hint{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:2px}
+.hint svg{width:13px;height:13px;color:var(--accent)}
+
+/* ============================== BUTTONS ============================== */
+.btn{display:inline-flex;align-items:center;gap:7px;border-radius:var(--r-sm);font:inherit;font-weight:560;
+  font-size:12px;padding:6px 12px;cursor:pointer;border:1px solid transparent;transition:.16s var(--ease);line-height:1;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:14px;height:14px}
+.btn-primary{background:var(--primary);color:var(--primary-ink)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-secondary{background:var(--surface-2);color:var(--ink);border-color:var(--border)}
+.btn-secondary:hover{border-color:var(--muted)}
+.btn-ghost{background:transparent;color:var(--muted)}
+.btn-ghost:hover{background:var(--surface-2);color:var(--ink)}
+.btn-soft{background:var(--primary-soft);color:var(--primary)}
+.btn-soft:hover{filter:brightness(1.1)}
+.btn-danger{background:transparent;color:var(--danger);border-color:oklch(from var(--danger) l c h / .4)}
+.btn-danger:hover{background:oklch(from var(--danger) l c h / .12)}
+.btn-icon{padding:7px;border-radius:var(--r-sm);background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
+.btn-icon:hover{color:var(--ink);border-color:var(--muted)}
+.btn-icon svg{width:15px;height:15px}
+.btn-lg{padding:9px 16px;font-size:13px;border-radius:var(--r)}
+.btn-sm{padding:4px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary.glow:hover{box-shadow:0 0 0 4px var(--primary-soft)}
+
+/* ============================== INPUTS ============================== */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11.5px;font-weight:560;color:var(--muted)}
+.input,.select,textarea.input{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:7px 10px;font:inherit;font-size:12px;transition:.16s var(--ease);outline:none}
+.input::placeholder{color:oklch(from var(--muted) l c h / .8)}
+.input:focus,.select:focus,textarea.input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+textarea.input{resize:vertical;min-height:74px;line-height:1.55}
+.search{position:relative}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--muted)}
+.search .input{padding-left:32px}
+.select-wrap{position:relative}
+.select{appearance:none;padding-right:30px;cursor:pointer}
+.select.sm{padding:5px 28px 5px 9px;font-size:11.5px}
+.select-wrap::after{content:"";position:absolute;right:11px;top:50%;width:7px;height:7px;
+  border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-65%) rotate(45deg);pointer-events:none}
+
+/* ============================== CUSTOM DROPDOWN ============================== */
+.dd{position:relative;display:inline-block}
+.dd-toggle{display:inline-flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:7px 11px;cursor:pointer;color:var(--ink);font:inherit;font-size:12px;min-width:190px;transition:.16s var(--ease)}
+.dd-toggle:hover{border-color:var(--muted)}
+.dd-toggle .chev{margin-left:auto;width:6px;height:6px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);
+  transform:rotate(45deg) translate(-2px,-2px);transition:.2s}
+.dd.open .dd-toggle{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.dd.open .chev{transform:rotate(-135deg)}
+.dd-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:var(--z-drop);background:var(--surface-2);
+  border:1px solid var(--border);border-radius:var(--r);padding:5px;box-shadow:var(--shadow);
+  opacity:0;transform:translateY(-6px) scale(.98);pointer-events:none;transition:.16s var(--ease)}
+.dd.open .dd-menu{opacity:1;transform:none;pointer-events:auto}
+.dd-item{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:var(--r-xs);cursor:pointer;font-size:12px;color:var(--ink)}
+.dd-item:hover{background:var(--surface)}
+.dd-item .ic{width:14px;height:14px;color:var(--muted)}
+.dd-item[aria-selected="true"]{color:var(--primary);font-weight:560}
+.dd-item[aria-selected="true"] .ic{color:var(--primary)}
+
+/* ============================== SEGMENTED ============================== */
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r-sm);padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:540;font-size:11.5px;
+  padding:6px 13px;border-radius:var(--r-xs);cursor:pointer;transition:.16s var(--ease)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-selected="true"]{background:var(--primary);color:var(--primary-ink)}
+.seg.soft button[aria-selected="true"]{background:var(--bg);color:var(--ink);box-shadow:var(--shadow)}
+
+/* ============================== MODEL SELECTOR ============================== */
+.msel{display:inline-flex;flex-direction:column;gap:5px;min-width:210px}
+.msel .top{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:560;color:var(--muted)}
+.msel .info{width:13px;height:13px;border-radius:50%;border:1px solid var(--border);color:var(--muted);
+  display:grid;place-items:center;font-size:9px;cursor:help}
+.msel .badge-prov{margin-left:auto;font:600 9px/1 var(--mono);letter-spacing:.05em;color:var(--accent);text-transform:uppercase}
+
+/* ============================== TABS ============================== */
+.tabs-underline{display:flex;gap:3px;border-bottom:1px solid var(--border-soft)}
+.tabs-underline button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:550;font-size:12.5px;
+  padding:9px 12px;cursor:pointer;position:relative;transition:.16s var(--ease)}
+.tabs-underline button:hover{color:var(--ink)}
+.tabs-underline button[aria-selected="true"]{color:var(--ink)}
+.tabs-underline button[aria-selected="true"]::after{content:"";position:absolute;left:9px;right:9px;bottom:-1px;height:2px;background:var(--primary);border-radius:2px}
+.tabs-pill{display:inline-flex;gap:3px;background:var(--surface-2);padding:4px;border-radius:var(--pill)}
+.tabs-pill button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:550;font-size:11.5px;
+  padding:6px 14px;border-radius:var(--pill);cursor:pointer;transition:.16s var(--ease)}
+.tabs-pill button:hover{color:var(--ink)}
+.tabs-pill button[aria-selected="true"]{background:var(--primary);color:var(--primary-ink)}
+
+/* ============================== TOGGLE / CHECK / RADIO ============================== */
+.switch{position:relative;display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-size:12px}
+.switch input{position:absolute;opacity:0}
+.switch .track{width:38px;height:21px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--pill);transition:.22s var(--ease);flex:none}
+.switch .thumb{position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:50%;background:var(--muted);transition:.22s var(--ease)}
+.switch input:checked + .track{background:var(--primary);border-color:var(--primary)}
+.switch input:checked + .track + .thumb{transform:translateX(17px);background:var(--primary-ink)}
+.switch input:focus-visible + .track{box-shadow:0 0 0 3px var(--primary-soft)}
+.check{display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-size:12px}
+.check input{position:absolute;opacity:0}
+.check .box{width:17px;height:17px;border-radius:var(--r-xs);border:1.5px solid var(--border);display:grid;place-items:center;transition:.16s var(--ease);flex:none}
+.check .box svg{width:11px;height:11px;color:var(--primary-ink);opacity:0;transform:scale(.5);transition:.16s var(--ease)}
+.check input:checked + .box{background:var(--primary);border-color:var(--primary)}
+.check input:checked + .box svg{opacity:1;transform:none}
+.radio .box{border-radius:50%}
+.radio .box::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--primary-ink);opacity:0;transform:scale(.3);transition:.16s var(--ease)}
+.radio input:checked + .box{background:var(--primary);border-color:var(--primary)}
+.radio input:checked + .box::after{opacity:1;transform:none}
+
+/* ============================== SLIDER ============================== */
+.slider{display:flex;flex-direction:column;gap:9px}
+.slider .top{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+.slider .val{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:var(--pill);background:var(--surface-2);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--primary);transition:.15s var(--ease)}
+input[type=range]::-webkit-slider-thumb:hover{box-shadow:0 0 0 5px var(--primary-soft),0 0 0 1px var(--primary)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--primary);border:3px solid var(--bg)}
+.scrub{position:relative;height:40px;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--border);background:linear-gradient(90deg,var(--surface-2),var(--surface));display:flex;align-items:center}
+.scrub .frames{display:flex;width:100%;height:100%;opacity:.5}
+.scrub .frames i{flex:1;border-right:1px solid var(--border-soft)}
+.scrub .needle{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);left:42%;box-shadow:0 0 8px var(--accent)}
+.scrub .needle::before{content:"";position:absolute;top:-1px;left:-5px;width:11px;height:11px;background:var(--accent);border-radius:3px;transform:rotate(45deg)}
+
+/* ============================== CHIPS / BADGES / STAR ============================== */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--pill);font-size:11.5px;font-weight:520;background:var(--surface-2);color:var(--ink);border:1px solid var(--border-soft)}
+.chip.solid{background:var(--primary-soft);color:var(--primary);border-color:transparent}
+.chip.accent{background:oklch(from var(--accent) l c h / .15);color:var(--accent);border-color:transparent}
+.chip .x{cursor:pointer;opacity:.6;font-size:13px;line-height:1}
+.chip .x:hover{opacity:1}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:var(--r-xs);font-size:10.5px;font-weight:620;letter-spacing:.01em}
+.badge.draft{background:var(--surface-2);color:var(--muted)}
+.badge.ok{background:oklch(from var(--success) l c h / .16);color:var(--success)}
+.badge.warn{background:oklch(from var(--warn) l c h / .16);color:var(--warn)}
+.badge.live{background:oklch(from var(--danger) l c h / .16);color:var(--danger)}
+.badge .pulse{width:5px;height:5px;border-radius:50%;background:currentColor;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.count{min-width:17px;height:17px;padding:0 5px;border-radius:var(--pill);background:var(--primary);color:var(--primary-ink);font-size:10.5px;font-weight:700;display:inline-grid;place-items:center}
+.star{background:none;border:0;cursor:pointer;padding:5px;border-radius:var(--r-xs);color:var(--muted);transition:.16s var(--ease);line-height:0}
+.star svg{width:18px;height:18px}
+.star:hover{color:var(--star);background:var(--surface-2)}
+.star.on{color:var(--star)}.star.on svg{fill:var(--star)}
+
+/* ============================== CARDS ============================== */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:var(--sp4)}
+.pcard{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);overflow:hidden;transition:.2s var(--ease);position:relative}
+.pcard:hover{border-color:var(--border);transform:translateY(-3px)}
+.pcard .thumb{aspect-ratio:3/4;background:radial-gradient(120% 90% at 30% 10%,var(--surface-2),var(--bg));position:relative;display:grid;place-items:center}
+.pcard .thumb .ph{width:42px;height:42px;color:var(--border);opacity:.8}
+.pcard .star{position:absolute;top:7px;right:7px;background:oklch(from var(--bg) l c h / .55);backdrop-filter:blur(6px)}
+.pcard .aff{position:absolute;top:9px;left:9px}
+.pcard .body{padding:10px 11px 12px}
+.pcard .title{font-size:12px;font-weight:540;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
+.pcard .meta{display:flex;align-items:center;gap:8px;margin-top:7px}
+.pcard .price{font-weight:680;font-size:14px}
+.pcard .rate{margin-left:auto;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:3px}
+.pcard .rate svg{width:11px;height:11px;color:var(--star);fill:var(--star)}
+.pcard .orders{font-size:10.5px;color:var(--muted);margin-top:3px}
+.persona{display:flex;align-items:center;gap:11px;padding:9px;border-radius:var(--r);border:1px solid var(--border-soft);background:var(--surface);cursor:pointer;transition:.16s var(--ease)}
+.persona:hover{border-color:var(--border)}
+.persona.sel{border-color:var(--primary);background:var(--primary-soft)}
+.persona .ava{width:40px;height:40px;border-radius:var(--r-sm);background:radial-gradient(120% 120% at 30% 20%,var(--surface-2),var(--bg));flex:none;display:grid;place-items:center;color:var(--border)}
+.persona .nm{font-weight:560;font-size:12.5px}
+.persona .sub{font-size:11px;color:var(--muted);margin-top:2px}
+.plist{display:flex;flex-direction:column;gap:3px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--r);padding:6px;width:264px}
+.prow{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:var(--r-sm);cursor:pointer;position:relative;transition:.15s var(--ease)}
+.prow:hover{background:var(--surface-2)}
+.prow.sel{background:var(--primary-soft)}
+.prow .th{width:31px;height:31px;border-radius:7px;background:var(--surface-2);flex:none;display:grid;place-items:center;color:var(--border);overflow:hidden}
+.prow .nm{font-size:12px;font-weight:530}
+.prow .preview{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%) scale(.9);width:140px;height:178px;
+  border-radius:var(--r);background:var(--surface-2);border:1px solid var(--border);box-shadow:var(--shadow);opacity:0;pointer-events:none;
+  transition:.2s var(--ease);z-index:var(--z-tip);display:grid;place-items:center;color:var(--border)}
+.prow:hover .preview{opacity:1;transform:translateY(-50%) scale(1)}
+
+/* ============================== PROGRESS ============================== */
+.pbar{height:7px;border-radius:var(--pill);background:var(--surface-2);overflow:hidden}
+.pbar i{display:block;height:100%;width:62%;border-radius:var(--pill);background:linear-gradient(90deg,var(--primary),var(--accent))}
+.spin{width:20px;height:20px;border-radius:50%;border:2.5px solid var(--surface-2);border-top-color:var(--primary);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skel{border-radius:var(--r-sm);background:linear-gradient(90deg,var(--surface-2),var(--surface),var(--surface-2));background-size:200% 100%;animation:shimmer 1.4s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.batch{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;width:288px}
+.batch .slot{aspect-ratio:3/4;border-radius:var(--r-sm);border:1px solid var(--border-soft);position:relative;overflow:hidden}
+.batch .slot.done{border-color:var(--primary)}
+.batch .slot.done::after{content:"✓";position:absolute;right:5px;bottom:3px;color:var(--primary);font-weight:800;font-size:12px}
+
+/* ============================== TOOLTIP / MODAL ============================== */
+.tip{position:relative;display:inline-flex}
+.tip .bubble{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);background:var(--ink);color:var(--bg);
+  font-size:11px;font-weight:520;padding:5px 9px;border-radius:var(--r-xs);white-space:nowrap;opacity:0;pointer-events:none;transition:.18s var(--ease);z-index:var(--z-tip)}
+.tip .bubble::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink)}
+.tip:hover .bubble{opacity:1;transform:translateX(-50%)}
+.backdrop{position:fixed;inset:0;background:oklch(0 0 0 / .55);backdrop-filter:blur(3px);z-index:var(--z-backdrop);display:none;place-items:center;padding:24px}
+.backdrop.open{display:grid;animation:fade .2s var(--ease)}
+@keyframes fade{from{opacity:0}}
+.modal{width:min(540px,100%);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;animation:pop .24s var(--ease)}
+@keyframes pop{from{transform:translateY(12px) scale(.97);opacity:0}}
+.modal .head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border-soft)}
+.modal .head h3{font-size:14px}
+.modal .body{padding:16px}
+.modal .foot{display:flex;justify-content:flex-end;gap:9px;padding:13px 16px;border-top:1px solid var(--border-soft)}
+.frame-prev{aspect-ratio:9/16;max-height:240px;margin:0 auto 14px;border-radius:var(--r);background:radial-gradient(120% 80% at 50% 30%,var(--surface-2),var(--bg));display:grid;place-items:center;color:var(--border)}
+footer{margin-top:74px;color:var(--muted);font-size:11.5px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span> Lookbook Studio <small>· UI Kit</small></div>
+  <div class="theme-dd" id="themeDD" title="Color theme — applies instantly and is saved between sessions">
+    <button class="tg"><span class="sw" id="tgSw" style="background:oklch(.64 .15 265)"></span><span id="tgLab">Midnight</span><span class="chev"></span></button>
+    <div class="menu">
+      <div data-t="midnight" aria-selected="true"><span class="sw" style="background:oklch(.64 .15 265)"></span>Midnight</div>
+      <div data-t="acid"><span class="sw" style="background:oklch(.86 .19 128)"></span>Acid</div>
+      <div data-t="ember"><span class="sw" style="background:oklch(.71 .17 48)"></span>Ember</div>
+      <div data-t="paper"><span class="sw" style="background:oklch(.48 .16 265)"></span>Paper</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="lede">
+    <h1>Component gallery</h1>
+    <p>Switch any of the 4 themes from the corner dropdown. Style variants are tagged
+       <span class="kbd">A</span> / <span class="kbd">B</span> / <span class="kbd">C</span>. Tell me e.g.
+       “theme <b>Acid</b>, tabs <b>A</b>, dropdown <b>B</b>, smaller radius” and I’ll bake it into the Qt (QSS) app.
+       Every control has a hover tooltip.</p>
+  </div>
+
+  <!-- BUTTONS -->
+  <section class="block"><h2>Buttons</h2>
+    <div class="panel col">
+      <div class="row">
+        <button class="btn btn-primary glow" title="Run the generation for the current step">Generate</button>
+        <button class="btn btn-secondary" title="Discard and close">Cancel</button>
+        <button class="btn btn-soft" title="Add this item to the wardrobe">Add to wardrobe</button>
+        <button class="btn btn-ghost" title="Skip this item">Skip</button>
+        <button class="btn btn-danger" title="Delete permanently">Delete</button>
+        <button class="btn btn-primary" disabled title="Unavailable until a persona is selected">Unavailable</button>
+      </div>
+      <div class="row">
+        <button class="btn btn-primary btn-lg" title="Start a new look"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/></svg>New look</button>
+        <button class="btn btn-secondary" title="Download saved media (yt-dlp)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download</button>
+        <button class="btn btn-soft btn-sm" title="Edit facial details, keep identity">Refine</button>
+        <button class="btn-icon" title="Regenerate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+        <button class="btn-icon" title="More actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DROPDOWNS -->
+  <section class="block"><h2>Dropdowns &amp; selects</h2>
+    <div class="panel row" style="align-items:flex-start">
+      <div class="cell"><span class="vlabel">A · native select</span>
+        <div class="select-wrap"><select class="select" title="Search engine / source">
+          <option>AliExpress · keyword</option><option>AliExpress · by image</option><option>Temu (later)</option></select></div></div>
+      <div class="cell"><span class="vlabel">B · custom (icons)</span>
+        <div class="dd" id="dd1" title="Search engine / source">
+          <button class="dd-toggle"><svg style="width:14px;height:14px;color:var(--muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span class="lab">AliExpress · keyword</span><span class="chev"></span></button>
+          <div class="dd-menu">
+            <div class="dd-item" aria-selected="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>AliExpress · keyword</div>
+            <div class="dd-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 13 2.5 2.5L16 9"/></svg>AliExpress · by image</div>
+            <div class="dd-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg>Temu (later)</div>
+          </div></div></div>
+      <div class="cell"><span class="vlabel">C · segmented</span>
+        <div class="seg" role="tablist" title="Collage engine"><button aria-selected="true">Flatlay</button><button>Hybrid</button><button>Full-AI</button></div>
+        <div style="height:9px"></div>
+        <div class="seg soft" role="tablist" title="Try-on layer"><button aria-selected="true">Top</button><button>Bottom</button><button>Shoes</button></div></div>
+    </div>
+  </section>
+
+  <!-- MODEL SELECTOR -->
+  <section class="block"><h2>Per-operation model picker <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted)">· on every AI step, saved between sessions</span></h2>
+    <div class="panel row" style="gap:26px;align-items:flex-start">
+      <label class="msel" title="LLM that translates your text to English before any model sees it. Saved between sessions.">
+        <span class="top">Translate <span class="info">i</span><span class="badge-prov">OpenRouter</span></span>
+        <div class="select-wrap"><select class="select sm"><option>hermes-4-405b</option></select></div></label>
+      <label class="msel" title="Vision model that reads garments from a reference frame. Saved between sessions.">
+        <span class="top">Image analysis <span class="info">i</span><span class="badge-prov">OpenRouter</span></span>
+        <div class="select-wrap"><select class="select sm"><option>gemini-3.1-flash-lite</option><option>step-3.7-flash</option></select></div></label>
+      <label class="msel" title="Model that builds the full-body persona from a face. Saved between sessions.">
+        <span class="top">Persona body <span class="info">i</span><span class="badge-prov">Replicate</span></span>
+        <div class="select-wrap"><select class="select sm"><option>z-image-turbo</option><option>qwen-image</option></select></div></label>
+      <label class="msel" title="Virtual try-on model (top / bottom / shoes). Saved between sessions.">
+        <span class="top">Try-on <span class="info">i</span><span class="badge-prov">Replicate</span></span>
+        <div class="select-wrap"><select class="select sm"><option>flux-fill-redux-try-on</option></select></div></label>
+    </div>
+  </section>
+
+  <!-- INPUTS -->
+  <section class="block"><h2>Inputs</h2>
+    <div class="panel row" style="align-items:flex-start">
+      <div class="cell field"><label>Persona name</label><input class="input" placeholder="e.g. Mika" title="Display name for this persona"></div>
+      <div class="cell field"><label>Product search</label>
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="input" placeholder="oversize hoodie men" title="Keywords for the AliExpress Affiliate API"></div></div>
+      <div class="cell field" style="min-width:100%"><label>Prompt / note</label>
+        <textarea class="input" placeholder="androgynous tomboy, slim athletic, buzzcut, silver hoops…" title="Free text in any language"></textarea>
+        <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg>
+          Type in any language — auto-translated to English (Hermes-4) before it reaches the models.</div></div>
+    </div>
+  </section>
+
+  <!-- TABS -->
+  <section class="block"><h2>Tabs</h2>
+    <div class="panel col">
+      <div><span class="vlabel">A · underline (main nav)</span>
+        <div class="tabs-underline" role="tablist"><button aria-selected="true" title="Create and manage AI personas">Personas</button><button title="Curated products">Wardrobe</button><button title="Virtual try-on">Fitting room</button><button title="Collect references">Collect</button><button title="Assemble & export">Lookbook</button></div></div>
+      <div><span class="vlabel">B · pills (sub-tabs)</span>
+        <div class="tabs-pill" role="tablist"><button aria-selected="true">References</button><button>Saved links</button><button>Parsing</button></div></div>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <section class="block"><h2>Toggles, checkboxes, sliders</h2>
+    <div class="panel row" style="align-items:flex-start;gap:46px">
+      <div class="col"><span class="vlabel">switches &amp; choices</span>
+        <label class="switch" title="Try shoes on the model too (else shoes go to the collage)"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span> Try shoes on model</label>
+        <label class="switch" title="Auto-ingest images dropped into the watch folder"><input type="checkbox"><span class="track"></span><span class="thumb"></span> Watch folder</label>
+        <label class="check" title="Only show in-stock products"><input type="checkbox" checked><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span> In stock only</label>
+        <label class="check" title="Only free-shipping products"><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span> Free shipping</label>
+        <label class="check radio" title="Unisex styling"><input type="radio" name="r" checked><span class="box"></span> Unisex</label>
+        <label class="check radio" title="Masc / boy styling"><input type="radio" name="r"><span class="box"></span> Masc</label></div>
+      <div class="col" style="flex:1;min-width:280px"><span class="vlabel">sliders</span>
+        <div class="slider"><div class="top"><span>Persona age</span><span class="val" id="ageV">22</span></div>
+          <input type="range" min="16" max="45" value="22" title="Target age for the persona" oninput="ageV.textContent=this.value"></div>
+        <div class="slider"><div class="top"><span>Batch size</span><span class="val" id="batchV">6</span></div>
+          <input type="range" min="1" max="12" value="6" title="How many variants to generate per run" oninput="batchV.textContent=this.value"></div>
+        <span class="vlabel" style="margin-top:5px">reel frame scrubber</span>
+        <div class="scrub" title="Scrub the reel and pick a frame"><div class="frames"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="needle"></div></div></div>
+    </div>
+  </section>
+
+  <!-- CHIPS / BADGES / STAR -->
+  <section class="block"><h2>Chips, badges, star</h2>
+    <div class="panel col">
+      <div class="row">
+        <span class="chip" title="Style tag">streetwear <span class="x">×</span></span>
+        <span class="chip" title="Style tag">oversize <span class="x">×</span></span>
+        <span class="chip solid" title="Garment slot">top</span>
+        <span class="chip solid" title="Garment slot">bottom</span>
+        <span class="chip accent" title="Style tag">y2k</span>
+        <span class="chip" title="Add a tag">+ add</span></div>
+      <div class="row">
+        <span class="badge draft">Draft</span><span class="badge ok">Downloaded</span><span class="badge warn">Needs frame</span>
+        <span class="badge live"><span class="pulse"></span>Generating</span><span class="badge ok">On model</span>
+        <span style="display:inline-flex;align-items:center;gap:8px">Saved links <span class="count">12</span></span></div>
+      <div class="row" style="align-items:center">
+        <span class="vlabel" style="margin:0">star toggle:</span>
+        <button class="star on" title="Starred — in wardrobe" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg></button>
+        <button class="star" title="Star this item" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg></button>
+        <span class="muted">(click)</span></div>
+    </div>
+  </section>
+
+  <!-- PRODUCT CARDS -->
+  <section class="block"><h2>Product cards (wardrobe)</h2>
+    <div class="panel"><div class="cards">
+      <article class="pcard" title="Oversize fleece hoodie — $14.20">
+        <div class="thumb"><svg class="ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7l3-4h12l3 4-4 2v12H7V9z"/></svg>
+          <span class="badge ok aff">AliExpress</span>
+          <button class="star on" title="Starred" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg></button></div>
+        <div class="body"><div class="title">Oversize fleece hoodie, dropped shoulder, unisex</div>
+          <div class="meta"><span class="price">$14.20</span><span class="rate"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg>4.8</span></div>
+          <div class="orders">3,240 orders · 6 colors</div></div></article>
+      <article class="pcard" title="Baggy cargo pants — $19.90">
+        <div class="thumb"><svg class="ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12l-1 6 2 12H7l2-12z"/></svg>
+          <span class="badge ok aff">AliExpress</span>
+          <button class="star" title="Star this item" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg></button></div>
+        <div class="body"><div class="title">Baggy cargo pants, multi-pocket, wide leg</div>
+          <div class="meta"><span class="price">$19.90</span><span class="rate"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg>4.6</span></div>
+          <div class="orders">1,870 orders · 4 colors</div></div></article>
+      <article class="pcard" title="Chunky sneakers — $27.50">
+        <div class="thumb"><svg class="ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 14h13l5 3v2H3z"/><path d="M3 14l3-4h7l3 4"/></svg>
+          <button class="star on" title="Starred" onclick="this.classList.toggle('on')"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg></button></div>
+        <div class="body"><div class="title">Chunky sneakers, retro dad shoes</div>
+          <div class="meta"><span class="price">$27.50</span><span class="rate"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.8 6.3.8-4.6 4.3 1.2 6.3L12 17.8 6.4 20.5l1.2-6.3L3 9.9l6.3-.8z"/></svg>4.9</span></div>
+          <div class="orders">5,020 orders · 3 colors</div></div></article>
+      <article class="pcard"><div class="thumb skel" style="aspect-ratio:3/4;border-radius:0"></div>
+        <div class="body"><div class="skel" style="height:13px;width:90%"></div><div class="skel" style="height:13px;width:60%;margin-top:8px"></div></div></article>
+    </div></div>
+  </section>
+
+  <!-- PERSONAS -->
+  <section class="block"><h2>Personas (left list + hover preview)</h2>
+    <div class="panel row" style="align-items:flex-start;gap:38px">
+      <div class="plist">
+        <div class="prow sel" title="Mika"><div class="th"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><span class="nm">Mika · tomboy</span><div class="preview"><svg style="width:32px;height:32px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div></div>
+        <div class="prow" title="Dan"><div class="th"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><span class="nm">Dan · street</span><div class="preview"><svg style="width:32px;height:32px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div></div>
+        <div class="prow" title="Yu"><div class="th"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><span class="nm">Yu · y2k</span><div class="preview"><svg style="width:32px;height:32px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div></div>
+      </div>
+      <div class="col" style="flex:1;min-width:240px">
+        <div class="persona sel"><div class="ava"><svg style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><div><div class="nm">Mika</div><div class="sub">tomboy · 22 · buzzcut</div></div><span class="badge ok" style="margin-left:auto">full-body ✓</span></div>
+        <div class="persona"><div class="ava"><svg style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><div><div class="nm">Dan</div><div class="sub">street · 24 · tattoos</div></div><span class="badge warn" style="margin-left:auto">face only</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="block"><h2>Progress &amp; loading</h2>
+    <div class="panel col">
+      <div class="row" style="gap:38px;align-items:center">
+        <div style="flex:1;min-width:240px"><span class="vlabel">batch try-on</span><div class="pbar"><i></i></div></div>
+        <div class="tip"><div class="spin"></div><span class="bubble">Generating 6 variants…</span></div>
+        <span class="badge live"><span class="pulse"></span>4 / 6 done</span></div>
+      <div><span class="vlabel">results grid</span>
+        <div class="batch"><div class="slot done"></div><div class="slot done"></div><div class="slot done"></div><div class="slot done"></div><div class="slot skel"></div><div class="slot skel"></div></div></div>
+    </div>
+  </section>
+
+  <!-- TOOLTIP / MODAL -->
+  <section class="block"><h2>Tooltip &amp; modal</h2>
+    <div class="panel row">
+      <div class="tip"><button class="btn btn-secondary">Styled tooltip</button><span class="bubble">Affiliate link with tracking_id</span></div>
+      <button class="btn btn-primary" title="Open the reel frame picker" onclick="mdl.classList.add('open')">Open frame picker</button>
+      <span class="muted" style="font-size:11.5px">Native tooltips (hover) are attached to every control above.</span>
+    </div>
+  </section>
+
+  <footer>Lookbook Studio · UI Kit — web preview for choosing direction. Final styles are translated into Qt (QSS).</footer>
+</div>
+
+<div class="backdrop" id="mdl">
+  <div class="modal">
+    <div class="head"><h3>Pick a frame from the reel</h3>
+      <button class="btn-icon" title="Close" onclick="mdl.classList.remove('open')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="body"><div class="frame-prev"><svg style="width:38px;height:38px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m9 9 6 3-6 3z"/></svg></div>
+      <div class="scrub" style="margin-bottom:6px" title="Scrub the reel"><div class="frames"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="needle"></div></div>
+      <div class="muted" style="display:flex;justify-content:space-between;font-size:11px"><span>00:00</span><span>0:14</span></div></div>
+    <div class="foot"><button class="btn btn-ghost" onclick="mdl.classList.remove('open')">Cancel</button><button class="btn btn-primary glow">Save frame</button></div>
+  </div>
+</div>
+
+<script>
+const root=document.documentElement;
+// theme dropdown
+const tdd=document.getElementById('themeDD');
+tdd.querySelector('.tg').addEventListener('click',e=>{e.stopPropagation();tdd.classList.toggle('open')});
+tdd.querySelectorAll('.menu div').forEach(it=>it.addEventListener('click',()=>{
+  root.dataset.theme=it.dataset.t;
+  tdd.querySelectorAll('.menu div').forEach(x=>x.setAttribute('aria-selected',x===it));
+  document.getElementById('tgLab').textContent=it.textContent.trim();
+  document.getElementById('tgSw').style.background=it.querySelector('.sw').style.background;
+  tdd.classList.remove('open');
+}));
+// engine dropdown
+const dd=document.getElementById('dd1');
+dd.querySelector('.dd-toggle').addEventListener('click',e=>{e.stopPropagation();dd.classList.toggle('open')});
+dd.querySelectorAll('.dd-item').forEach(it=>it.addEventListener('click',()=>{
+  dd.querySelectorAll('.dd-item').forEach(x=>x.setAttribute('aria-selected',x===it));
+  dd.querySelector('.lab').textContent=it.textContent.trim();dd.classList.remove('open')}));
+document.addEventListener('click',()=>{dd.classList.remove('open');tdd.classList.remove('open')});
+// single-select groups
+document.querySelectorAll('.seg,.tabs-underline,.tabs-pill').forEach(g=>g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-selected',x===b))})));
+document.querySelectorAll('.plist').forEach(l=>l.querySelectorAll('.prow').forEach(r=>r.addEventListener('click',()=>{
+  l.querySelectorAll('.prow').forEach(x=>x.classList.toggle('sel',x===r))})));
+mdl.addEventListener('click',e=>{if(e.target.id==='mdl')e.currentTarget.classList.remove('open')});
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "openrouter_api_key": "",
+  "replicate_api_token": "",
+  "aliexpress": {
+    "app_key": "",
+    "app_secret": "",
+    "tracking_id": "",
+    "language": "EN",
+    "currency": "USD"
+  },
+  "telegram": {
+    "bot_token": "",
+    "channel_id": ""
+  },
+  "model_choices": {
+    "G1": "prunaai/z-image-turbo",
+    "G2": "openai/gpt-image-1.5",
+    "G3": "openai/gpt-image-1.5",
+    "G4": "ideogram-ai/ideogram-character"
+  }
+}
